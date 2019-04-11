@@ -3,7 +3,7 @@ const request = require('supertest');
 const server = require('./server');
 const db = require('../data/dbConfig');
 
-describe('server.js', () => {
+describe.skip('server.js', () => {
   beforeEach(async () => {
     await db('boardgames').truncate();
   });

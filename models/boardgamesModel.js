@@ -1,0 +1,29 @@
+const db = require('../data/dbConfig');
+
+module.exports = {
+  insert,
+  remove,
+  getAll,
+  findById
+};
+
+async function insert(boardgame) {
+  const [id] = await db('boardgames').insert(boardgame);
+  return db('boardgames')
+    .where({ id })
+    .first();
+}
+
+function remove(id) {
+  return null;
+}
+
+function getAll() {
+  return db('boardgames');
+}
+
+function findById(id) {
+  return db('boardgames')
+    .where({ id })
+    .first();
+}
