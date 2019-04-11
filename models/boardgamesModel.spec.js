@@ -37,10 +37,12 @@ describe('boardgames model', () => {
       expect(boardgames).toHaveLength(1);
     });
 
-    it('should remove the provided boardgame - name property check', async () => {
+    it('should remove the provided boardgame - findById should return nothing', async () => {
       await Boardgames.remove(2);
-      const boardgames = await Boardgames.findById(2);
-      expect(boardgames).toHaveLength(0);
+      const boardgames = await db('boardgames')
+        .where({ id: 2 })
+        .first();
+      expect(boardgames).toBe(undefined);
     });
   });
 });
