@@ -45,14 +45,19 @@ describe('server.js', () => {
   });
 
   describe('DELETE /', () => {
-    it('status code should be 202 Accepted', async () => {
-      const res = await request(server).delete('/1');
-      expect(res.status).toBe(202);
+    beforeEach(async () => {
+      await db.insert({ name: 'Indonesia' });
+      await db.insert({ name: 'Le Havre' });
     });
 
-    it('boardgames table length should be 1', async () => {
+    it('status code should be 200 OK', async () => {
       const res = await request(server).delete('/1');
-      expect(res.body).toHaveLength(1);
+      expect(res.status).toBe(200);
     });
+
+    // it('boardgames table length should be 1', async () => {
+    //   const res = await request(server).delete('/1');
+    //   expect(res.body).toHaveLength(1);
+    // });
   });
 });

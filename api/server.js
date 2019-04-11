@@ -14,7 +14,7 @@ server.post('/', async (req, res) => {
   const { name } = req.body;
   if (!name) {
     res.status(400).json({
-      error: 'Please provide a dish name.'
+      error: 'Please provide a boardgame name.'
     });
   } else {
     try {
@@ -25,6 +25,24 @@ server.post('/', async (req, res) => {
         error: `There was an error while adding the boardgame data. ${err}`
       });
     }
+  }
+});
+
+server.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const boardgames = await Boardgames.remove({ id });
+    if (boardgames.length === 2) {
+      res
+        .status(404)
+        .json({ error: 'The boardgame with the specified ID does not exist.' });
+    } else {
+      res.status(200).json({ message: 'Boardgame successfully deleted.' });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: `There was an error while deleting the boardgame data. ${err}`
+    });
   }
 });
 
