@@ -42,12 +42,17 @@ describe('server.js', () => {
         .send({ name: 'Indonesia' });
       expect(res.body).toEqual({ id: 1, name: 'Indonesia' });
     });
+
+    it('status code should be 400 if no name is sent', async () => {
+      const res = await request(server).post('/');
+      expect(res.status).toBe(400);
+    });
   });
 
-  describe('DELETE /', () => {
+  describe('DELETE /:id', () => {
     beforeEach(async () => {
-      await db.insert({ name: 'Indonesia' });
-      await db.insert({ name: 'Le Havre' });
+      await db('boardgames').insert({ name: 'Indonesia' });
+      await db('boardgames').insert({ name: 'Le Havre' });
     });
 
     it('status code should be 200 OK', async () => {
@@ -55,9 +60,14 @@ describe('server.js', () => {
       expect(res.status).toBe(200);
     });
 
-    // it('boardgames table length should be 1', async () => {
-    //   const res = await request(server).delete('/1');
-    //   expect(res.body).toHaveLength(1);
-    // });
+    it('boardgames table length should be 1', async () => {
+      const res = await request(server).delete('/1');
+      expect(res.body.message).toBe('Boardgame successfully deleted.');
+    });
+
+    it('status code should be 404 if nonexistent ID passed in', async () => {
+      const res = await request(server).delete('/200');
+      expect(res.status).toBe(404);
+    });
   });
 });

@@ -6,6 +6,11 @@ const server = express();
 
 server.use(express.json());
 
+server.get('/all', async (req, res) => {
+  const boardgames = await Boardgames.getAll();
+  res.status(200).json(boardgames);
+});
+
 server.get('/', async (req, res) => {
   res.status(200).json({ api: 'running...' });
 });
@@ -31,8 +36,8 @@ server.post('/', async (req, res) => {
 server.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const boardgames = await Boardgames.remove({ id });
-    if (boardgames.length === 2) {
+    const deletedGame = await Boardgames.remove(id);
+    if (!deletedGame) {
       res
         .status(404)
         .json({ error: 'The boardgame with the specified ID does not exist.' });
