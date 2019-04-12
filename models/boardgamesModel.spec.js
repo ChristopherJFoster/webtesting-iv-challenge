@@ -13,9 +13,8 @@ describe('boardgames model', () => {
   describe('insert()', () => {
     it('should insert the provided boardgame - array length check', async () => {
       let boardgames = await db('boardgames');
-
+      expect(boardgames).toHaveLength(0);
       await Boardgames.insert({ name: 'Indonesia' });
-
       boardgames = await db('boardgames');
       expect(boardgames).toHaveLength(1);
     });
@@ -23,7 +22,6 @@ describe('boardgames model', () => {
     it('should insert the provided boardgame - name property check', async () => {
       let boardgame = await Boardgames.insert({ name: 'Indonesia' });
       expect(boardgame.name).toBe('Indonesia');
-
       boardgame = await Boardgames.insert({ name: 'Le Havre' });
       expect(boardgame.name).toBe('Le Havre');
     });
@@ -42,7 +40,6 @@ describe('boardgames model', () => {
       await Boardgames.insert({ name: 'Indonesia' });
       await Boardgames.insert({ name: 'Le Havre' });
       let boardgames = await db('boardgames');
-      console.log(boardgames);
       expect(boardgames).toHaveLength(2);
       await Boardgames.remove(1);
       boardgames = await db('boardgames');
